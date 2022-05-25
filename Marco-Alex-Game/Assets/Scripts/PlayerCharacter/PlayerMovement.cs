@@ -21,12 +21,19 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        rigid.velocity = movement.normalized * movespeed * Time.fixedDeltaTime;
+        if (Player.Instance.Animator.GetBool("Moving"))
+        {
+            rigid.velocity = movement.normalized * movespeed * Time.fixedDeltaTime;
+        }
+        else
+        {
+            rigid.velocity = Vector2.zero;
+        }
     }
 
     private void Animate()
     {
-        if (movement != Vector2.zero)
+        if (movement != Vector2.zero && Player.Instance.CooldownCheck())
         {
             Player.Instance.Animator.SetFloat("X", movement.x);
             Player.Instance.Animator.SetFloat("Y", movement.y);
@@ -41,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Move();
         Animate();
+        Move();
     }
 }

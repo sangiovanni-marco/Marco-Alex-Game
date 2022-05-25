@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 public class PlayerAttack : MonoBehaviour
 {
     private bool attack = false;
+    private float attackSpeed = 0.4f;
+    private float staminaCost = 5f;
 
     public void OnAttack(InputAction.CallbackContext context)
     {
@@ -14,9 +16,13 @@ public class PlayerAttack : MonoBehaviour
 
     private void Attack()
     {
-        if(attack)
+        if(attack 
+            && Player.Instance.StaminaCostCheck(staminaCost) 
+            && Player.Instance.CooldownCheck())
         {
             Player.Instance.Animator.SetBool("Attacking", true);
+            Player.Instance.CooldownTime = attackSpeed;
+            Player.Instance.Stamina -= 5;
         }
         else
         {
