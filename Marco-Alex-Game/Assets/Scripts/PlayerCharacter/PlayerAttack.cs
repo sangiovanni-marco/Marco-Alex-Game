@@ -8,6 +8,9 @@ public class PlayerAttack : MonoBehaviour
     private bool attack = false;
     private float attackSpeed = 0.4f;
     private float staminaCost = 5f;
+    private Transform boxCenter;
+    private LayerMask enemyLayer;
+
 
     public void OnAttack(InputAction.CallbackContext context)
     {
@@ -23,6 +26,13 @@ public class PlayerAttack : MonoBehaviour
             Player.Instance.Animator.SetBool("Attacking", true);
             Player.Instance.CooldownTime = attackSpeed;
             Player.Instance.Stamina -= 5;
+
+            Collider2D[] enemies = Physics2D.OverlapBoxAll(boxCenter.position, boxCenter.GetComponent<BoxCollider2D>().size, enemyLayer);
+
+            foreach(Collider2D enemy in enemies)
+            {
+                Debug.Log(enemy.name);
+            }
         }
         else
         {

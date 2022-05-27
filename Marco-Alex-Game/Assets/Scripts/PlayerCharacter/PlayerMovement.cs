@@ -38,11 +38,21 @@ public class PlayerMovement : MonoBehaviour
             Player.Instance.Animator.SetFloat("X", movement.x);
             Player.Instance.Animator.SetFloat("Y", movement.y);
             Player.Instance.Animator.SetBool("Moving", true);
+
+            CheckDirection();
         }
         else
         {
             Player.Instance.Animator.SetBool("Moving", false);
         }
+    }
+
+    private void CheckDirection()
+    {
+        if (movement.y > 0) Debug.Log("Up");
+        else if (movement.y < 0) Debug.Log("Down");
+        else if (movement.x > 0) Debug.Log("Right");
+        else if (movement.x < 0) Debug.Log("Left");
     }
 
     // Update is called once per frame
