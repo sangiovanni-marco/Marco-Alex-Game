@@ -6,6 +6,11 @@ using UnityEngine.InputSystem;
 public class PlayerAttack : MonoBehaviour
 {
     private bool attack = false;
+    private float attackSpeed = 0.4f;
+    private float staminaCost = 5f;
+
+    private Transform boxCenter;
+    private LayerMask enemyLayer;
 
     public void OnAttack(InputAction.CallbackContext context)
     {
