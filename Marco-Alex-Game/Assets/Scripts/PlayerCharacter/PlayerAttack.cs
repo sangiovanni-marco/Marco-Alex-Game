@@ -34,39 +34,42 @@ public class PlayerAttack : MonoBehaviour
             Player.Instance.CooldownTime = attackSpeed;
             Player.Instance.Stamina -= 5;
 
-            Transform hitboxCenter = null;
-            switch (PlayerMovement.Instance.Direction)
-            {
-                case "Down":
-                    hitboxCenter = attackHitboxes[0].transform;
-                    break;
-
-                case "Up":
-                    hitboxCenter = attackHitboxes[1].transform;
-                    break;
-
-                case "Right":
-                    hitboxCenter = attackHitboxes[2].transform;
-                    break;
-
-                case "Left":
-                    hitboxCenter = attackHitboxes[3].transform;
-                    break;
-            }
-
-            Debug.Log(hitboxCenter.position);
-
-            Collider2D[] enemies = Physics2D.OverlapBoxAll(hitboxCenter.position, hitboxCenter.GetComponent<BoxCollider2D>().size, enemyLayer);
-
-            foreach(Collider2D enemy in enemies)
-            {
-                Debug.Log(enemy.name);
-                //enemy.GetComponent<Enemy>().ReceiveDamage(damage);
-            }
+            StartCoroutine("CheckHitbox");
         }
         else
         {
             Player.Instance.Animator.SetBool("Attacking", false);
+        }
+    }
+
+    private IEnumerator CheckHitbox()
+    {
+        yield return new WaitForSeconds(0.1f);
+        Transform hitboxCenter = null;
+        switch (PlayerMovement.Instance.Direction)
+        {
+            case "Down":
+                hitboxCenter = attackHitboxes[0].transform;
+                break;
+
+            case "Up":
+                hitboxCenter = attackHitboxes[1].transform;
+                break;
+
+            case "Right":
+                hitboxCenter = attackHitboxes[2].transform;
+                break;
+
+            case "Left":
+                hitboxCenter = attackHitboxes[3].transform;
+                break;
+        }
+
+        Collider2D[] enemies = Physics2D.OverlapBoxAll(hitboxCenter.position, hitboxCenter.GetComponent<BoxCollider2D>().size, 0f, enemyLayer);
+
+        foreach (Collider2D enemy in enemies)
+        {
+            enemy.GetComponent<Enemy>().ReceiveDamage(damage);
         }
     }
 

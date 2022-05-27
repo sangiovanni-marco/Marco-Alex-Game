@@ -5,9 +5,26 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+    private static PlayerMovement instance;
     private Rigidbody2D rigid;
     private float movespeed = 500f;
     private Vector2 movement;
+    private string direction = "Down";
+
+    public static PlayerMovement Instance { get => instance; set => instance = value; }
+    public string Direction { get => direction; set => direction = value; }
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
 
     void Start()
     {
@@ -49,10 +66,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void CheckDirection()
     {
-        if (movement.y > 0) Debug.Log("Up");
-        else if (movement.y < 0) Debug.Log("Down");
-        else if (movement.x > 0) Debug.Log("Right");
-        else if (movement.x < 0) Debug.Log("Left");
+        if (movement.y > 0) Direction = "Up";
+        else if (movement.y < 0) Direction = "Down";
+        else if (movement.x > 0) Direction = "Right";
+        else if (movement.x < 0) Direction = "Left";
     }
 
     // Update is called once per frame

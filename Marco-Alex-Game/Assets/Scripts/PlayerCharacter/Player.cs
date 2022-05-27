@@ -36,11 +36,15 @@ public class Player : Character
         Animator = GetComponent<Animator>();
     }
 
+    public override void Die()
+    {
+
+    }
+
     public bool StaminaCostCheck(float cost)
     {
         if (cost <= Stamina)
         {
-            Debug.Log(Stamina);
             return true;
         }
         else return false;
