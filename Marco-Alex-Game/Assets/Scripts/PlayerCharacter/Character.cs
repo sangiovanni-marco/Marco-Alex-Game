@@ -10,15 +10,17 @@ public class Character : MonoBehaviour
 
     public virtual void ReceiveDamage(float damage)
     {
-        hp -= damage;
-        Debug.Log(hp);
-        invincible = true;
-        if (IsDead())
+        if (!invincible)
         {
-            Die();
+            hp -= damage;
+            invincible = true;
+            if (IsDead())
+            {
+                Die();
+            }
+            StartCoroutine("DamageFeedback");
+            StartCoroutine("InvincibilityTimer");
         }
-        StartCoroutine("DamageFeedback");
-        StartCoroutine("InvincibilityTimer");
     }
 
     private bool IsDead()
