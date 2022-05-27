@@ -8,9 +8,16 @@ public class PlayerAttack : MonoBehaviour
     private bool attack = false;
     private float attackSpeed = 0.4f;
     private float staminaCost = 5f;
-    private Transform boxCenter;
+    private float damage = 10f;
+
+    [SerializeField] private GameObject[] attackHitboxes;
     private LayerMask enemyLayer;
 
+    // Start is called before the first frame update
+    void Start()
+    {
+        enemyLayer = LayerMask.GetMask("Enemy");
+    }
 
     public void OnAttack(InputAction.CallbackContext context)
     {
@@ -27,22 +34,40 @@ public class PlayerAttack : MonoBehaviour
             Player.Instance.CooldownTime = attackSpeed;
             Player.Instance.Stamina -= 5;
 
-            Collider2D[] enemies = Physics2D.OverlapBoxAll(boxCenter.position, boxCenter.GetComponent<BoxCollider2D>().size, enemyLayer);
+            Transform hitboxCenter = null;
+            switch (PlayerMovement.Instance.Direction)
+            {
+                case "Down":
+                    hitboxCenter = attackHitboxes[0].transform;
+                    break;
+
+                case "Up":
+                    hitboxCenter = attackHitboxes[1].transform;
+                    break;
+
+                case "Right":
+                    hitboxCenter = attackHitboxes[2].transform;
+                    break;
+
+                case "Left":
+                    hitboxCenter = attackHitboxes[3].transform;
+                    break;
+            }
+
+            Debug.Log(hitboxCenter.position);
+
+            Collider2D[] enemies = Physics2D.OverlapBoxAll(hitboxCenter.position, hitboxCenter.GetComponent<BoxCollider2D>().size, enemyLayer);
 
             foreach(Collider2D enemy in enemies)
             {
                 Debug.Log(enemy.name);
+                //enemy.GetComponent<Enemy>().ReceiveDamage(damage);
             }
         }
         else
         {
             Player.Instance.Animator.SetBool("Attacking", false);
         }
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
     }
 
     // Update is called once per frame
