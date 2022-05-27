@@ -5,26 +5,12 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private static PlayerMovement instance;
     private Rigidbody2D rigid;
     private float movespeed = 500f;
     private Vector2 movement;
     private string direction = "Down";
 
-    public static PlayerMovement Instance { get => instance; set => instance = value; }
     public string Direction { get => direction; set => direction = value; }
-
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            Instance = this;
-        }
-    }
 
     void Start()
     {

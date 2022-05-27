@@ -46,7 +46,7 @@ public class PlayerAttack : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
         Transform hitboxCenter = null;
-        switch (PlayerMovement.Instance.Direction)
+        switch (Player.Instance.GetComponent<PlayerMovement>().Direction)
         {
             case "Down":
                 hitboxCenter = attackHitboxes[0].transform;
